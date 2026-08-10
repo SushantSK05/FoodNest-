@@ -32,7 +32,7 @@ DEBUG = os.environ.get('DJANGO_DEBUG', 'True') == 'True'
 
 # ALLOWED_HOSTS must be set in production. Provide a comma-separated list
 # via DJANGO_ALLOWED_HOSTS (e.g. example.com,www.example.com).
-allowed = os.environ.get('DJANGO_ALLOWED_HOSTS', '127.0.0.1,localhost')
+allowed = os.environ.get('DJANGO_ALLOWED_HOSTS', '127.0.0.1,localhost,.vercel.app,*')
 ALLOWED_HOSTS = [h.strip() for h in allowed.split(',') if h.strip()]
 
 # Security hardening for production (only enabled when DEBUG is False)
@@ -141,6 +141,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
 STATIC_URL = "static/"
+STATIC_ROOT = BASE_DIR / "staticfiles"
 
 # Payment provider keys: read from environment in production
 RAZORPAY_KEY_ID = os.environ.get('RAZORPAY_KEY_ID', "rzp_test_TM4IEF2Xa74hU3")

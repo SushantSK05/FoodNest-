@@ -1,0 +1,19 @@
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "mealbite/mealbite/wsgi.py",
+      "use": "@vercel/python"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/static/(.*)",
+      "dest": "/mealbite/delivery/static/$1"
+    },
+    {
+      "src": "(.*)",
+      "dest": "mealbite/mealbite/wsgi.py"
+    }
+  ]
+}

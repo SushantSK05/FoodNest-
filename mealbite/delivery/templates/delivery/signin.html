@@ -1,0 +1,27 @@
+{% extends 'delivery/base.html' %}
+
+{% block title %}Sign In | FoodNest{% endblock %}
+
+{% block content %}
+<div class="nav-back-wrap" style="margin-bottom: 20px;">
+    <a href="/" class="button secondary" style="display: inline-flex; align-items: center; gap: 8px;">
+        ← Back to Home
+    </a>
+</div>
+
+<section class="form-panel">
+    <h2 class="section-heading">Sign In</h2>
+    <p class="help-text">"Good food is waiting. Just sign in. 🚀"</p>
+
+    <form action="{% url 'signin' %}" method="post" class="form-grid">
+        {% csrf_token %}
+        <label for="username">Username</label>
+        <input id="username" type="text" name="username" required>
+
+        <label for="password">Password</label>
+        <input id="password" type="password" name="password" required>
+
+        <button class="primary" type="submit">Sign In</button>
+    </form>
+</section>
+{% endblock %}

@@ -1,0 +1,39 @@
+{% extends 'delivery/base.html' %}
+
+{% block title %}Add Restaurant | FoodNest{% endblock %}
+
+{% block content %}
+<div class="nav-back-wrap" style="margin-bottom: 20px;">
+    <a href="{% url 'admin_home' %}" class="button secondary" style="display: inline-flex; align-items: center; gap: 8px;">
+        ← Back to Dashboard
+    </a>
+</div>
+
+<section class="form-panel">
+    <h2 class="section-heading">Add New Restaurant</h2>
+    <p class="help-text">Add a restaurant listing with cuisine, rating, and image URL.</p>
+
+    {% if error %}
+    <div class="status-panel error-panel" style="margin-bottom: 20px;">
+        <p>{{ error }}</p>
+    </div>
+    {% endif %}
+
+    <form action="{% url 'add_restaurant' %}" method="post" class="form-grid">
+        {% csrf_token %}
+        <label for="name">Restaurant name</label>
+        <input id="name" type="text" name="name" required>
+
+        <label for="picture">Picture URL</label>
+        <input id="picture" type="text" name="picture" placeholder="https://example.com/image.jpg">
+
+        <label for="cuisine">Cuisine</label>
+        <input id="cuisine" type="text" name="cuisine" required>
+
+        <label for="rating">Rating</label>
+        <input id="rating" type="number" name="rating" min="0" max="5" step="0.1" required>
+
+        <button class="primary" type="submit">Add Restaurant</button>
+    </form>
+</section>
+{% endblock %}

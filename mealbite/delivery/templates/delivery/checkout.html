@@ -1,0 +1,115 @@
+{% extends 'delivery/base.html' %}
+
+{% block title %}Checkout | FoodNest{% endblock %}
+
+{% block content %}
+
+<section class="hero">
+    <div>
+        <h1 class="page-title">Checkout</h1>
+        <p class="help-text">Confirm your order and complete payment securely.</p>
+    </div>
+    <div class="hero-actions">
+        <a class="button secondary" href="{% url 'show_cart' username %}">← Back to Cart</a>
+    </div>
+</section>
+
+<section class="panel">
+    {% if error %}
+        <div class="status-panel error-panel">
+            <div class="summary-panel">
+                <h3 class="section-heading">Payment Error</h3>
+                <p>{{ error }}</p>
+                <p class="section-note">Please refresh and try again, or contact support if the issue persists.</p>
+            </div>
+        </div>
+    {% else %}
+        <div class="checkout-grid">
+            <div>
+                <h3 class="section-heading">Order Items</h3>
+                {% for ci in cart_items %}
+                <article class="checkout-item-card">
+                    <div class="card-body">
+                        <div>
+                            <h3 class="card-title">{{ ci.item.name }}</h3>
+                            <div class="card-meta">
+                                <span class="badge">₹{{ ci.item.price }}</span>
+                                <span>{{ ci.quantity }} x</span>
+                            </div>
+                        </div>
+                        <p class="help-text">Prepared fresh from the kitchen.</p>
+                    </div>
+                </article>
+                {% endfor %}
+            </div>
+
+            <div class="summary-panel checkout-summary">
+                <h3 class="section-heading">Payment Summary</h3>
+                <p class="help-text">Your order total is ready. Click pay to complete the purchase.</p>
+                <div class="summary-row">
+                    <span>Subtotal</span>
+                    <span>₹{{ total_price }}</span>
+                </div>
+                <div class="summary-row">
+                    <span>Delivery Fee</span>
+                    <span>₹0</span>
+                </div>
+                <div class="summary-row">
+                    <strong>Total</strong>
+                    <strong class="price-tag">₹{{ total_price }}</strong>
+                </div>
+                <button class="button primary" id="rzp-button">Pay with Razorpay</button>
+            </div>
+        </div>
+    {% endif %}
+</section>
+
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>
+    var options = {
+        "key": "{{ razorpay_key_id }}",
+        "amount": "{{ amount_paise }}",
+        "currency": "INR",
+        "name": "FoodNest",
+        "description": "Order Payment",
+        "order_id": "{{ order_id }}",
+        "handler": function (response) {
+            // Send details to server for verification
+            var formData = new FormData();
+            formData.append('razorpay_payment_id', response.razorpay_payment_id);
+            formData.append('razorpay_order_id', response.razorpay_order_id);
+            formData.append('razorpay_signature', response.razorpay_signature);
+
+            fetch("{% url 'verify_payment' username %}", {
+                method: 'POST',
+                body: formData,
+                credentials: 'same-origin'
+            }).then(function(resp){
+                return resp.json();
+            }).then(function(data){
+                if(data.status === 'ok'){
+                    window.location.href = "{% url 'orders' username %}";
+                } else {
+                    alert('Payment verification failed');
+                }
+            }).catch(function(err){
+                alert('Payment verification error');
+            });
+        },
+        "prefill": {
+            "name": "{{ username }}",
+            "email": "customer@example.com",
+            "contact": "9999999999"
+        },
+        "theme": {
+            "color": "#528FF0"
+        }
+    };
+    var rzp = new Razorpay(options);
+    document.getElementById('rzp-button').onclick = function(e) {
+        rzp.open();
+        e.preventDefault();
+    }
+</script>
+
+{% endblock %}

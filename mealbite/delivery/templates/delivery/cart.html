@@ -1,0 +1,82 @@
+{% extends 'delivery/base.html' %}
+
+{% block title %}Cart | FoodNest{% endblock %}
+
+{% block content %}
+<section class="hero">
+    <div>
+        <h1 class="page-title">Your Cart</h1>
+        <p class="help-text">Review the items you selected before checkout.</p>
+    </div>
+    <div class="hero-actions">
+        <a class="button secondary" href="{% url 'customer_home' username %}">← Back to Restaurants</a>
+    </div>
+</section>
+
+<section class="panel">
+    <div class="section-heading-wrap">
+        <h2 class="section-heading">Cart Items</h2>
+        <p class="help-text">You’re almost there — review your selection before placing your order.</p>
+    </div>
+
+    {% if cart_items %}
+    <div class="cart-layout">
+        <div>
+            <div class="card-grid">
+                {% for ci in cart_items %}
+                <article class="card">
+                    <img src="{{ ci.item.picture }}" alt="{{ ci.item.name }}">
+                    <div class="card-body">
+                        <div>
+                            <h3 class="card-title">{{ ci.item.name }}</h3>
+                            <div class="card-meta">
+                                <span class="price-tag">₹{{ ci.item.price }}</span>
+                                <span class="badge">Qty: {{ ci.quantity }}</span>
+                            </div>
+                        </div>
+                        <p class="help-text">{{ ci.item.description }}</p>
+                        <div class="card-actions">
+                            <form action="{% url 'remove_from_cart' ci.item.id username %}" method="post" style="display:inline">{% csrf_token %}
+                                <button class="button secondary" type="submit">Remove</button>
+                            </form>
+                            <form action="{% url 'update_quantity' ci.item.id username %}" method="post" style="display:inline">
+                                {% csrf_token %}
+                                <input type="number" name="quantity" value="{{ ci.quantity }}" min="0" style="width:60px;"> 
+                                <button class="button" type="submit">Update</button>
+                            </form>
+                        </div>
+                    </div>
+                </article>
+                {% endfor %}
+            </div>
+        </div>
+
+        <aside class="summary-panel cart-summary">
+            <h3 class="section-heading">Order summary</h3>
+            <p class="help-text">Secure checkout and fast delivery in just a few taps.</p>
+            <div class="summary-row">
+                <span>Subtotal</span>
+                <span>₹{{ total_price }}</span>
+            </div>
+            <div class="summary-row">
+                <span>Delivery fee</span>
+                <span>Free</span>
+            </div>
+            <div class="summary-row total-row">
+                <span>Total</span>
+                <strong>₹{{ total_price }}</strong>
+            </div>
+            <a class="button primary" href="{% url 'checkout' username %}">Proceed to Checkout</a>
+        </aside>
+    </div>
+    {% else %}
+    <div class="status-panel empty-state">
+        <div class="summary-panel">
+            <h3 class="section-heading">Your cart is empty</h3>
+            <p class="help-text">Add tasty items from the menu to start your order.</p>
+            <a class="button primary" href="{% url 'customer_home' username %}">Browse Restaurants</a>
+        </div>
+    </div>
+    {% endif %}
+</section>
+{% endblock %}

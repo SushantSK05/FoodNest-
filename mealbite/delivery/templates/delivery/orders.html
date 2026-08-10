@@ -1,0 +1,27 @@
+{% extends 'delivery/base.html' %}
+
+{% block title %}Order Confirmed | FoodNest{% endblock %}
+
+{% block content %}
+<section class="hero">
+    <div>
+        <h1 class="page-title">Thank you, {{ username }}!</h1>
+        <p class="help-text">Your order has been placed and is on its way.</p>
+    </div>
+</section>
+
+<section class="panel">
+    <div class="summary-panel">
+        <h2 class="section-heading">Delivery Address</h2>
+        <p>{{ customer.address }}</p>
+        <p class="help-text">Your order is confirmed and will be delivered shortly. Thank you for choosing FoodNest!</p>
+        <div class="hero-actions left" style="margin-top: 24px;">
+            {% if cart_items %}
+                <a class="button secondary" href="{% url 'view_menu' cart_items.0.item.restaurant.id username %}">Continue Browsing</a>
+            {% else %}
+                <a class="button secondary" href="{% url 'customer_home' username %}">Return Home</a>
+            {% endif %}
+        </div>
+    </div>
+</section>
+{% endblock %}

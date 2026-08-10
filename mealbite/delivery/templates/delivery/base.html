@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}FoodNest{% endblock %}</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'delivery/styletheme.css' %}">
+</head>
+<body>
+    <header class="site-header" role="banner">
+        <div class="header-inner">
+            <a href="/" class="brand" aria-label="FoodNest home">
+                <span class="logo-wrap" aria-hidden="true">
+                    <img class="logo-img" src="{% static 'delivery/images/foodnest-logo.svg' %}" alt="FoodNest logo">
+                </span>
+
+                <span class="brand-text">
+                    <span class="food">Food</span>
+                    <span class="nest">Nest</span>
+                </span>
+            </a>
+
+            <nav class="site-nav">
+                <a href="/" class="nav-link home-link">Home</a>
+                {% if user.is_authenticated %}
+                    {% if user.is_superuser or user.username == 'admin' %}
+                        <a href="{% url 'admin_home' %}" class="nav-link">Admin Panel</a>
+                    {% else %}
+                        <a href="{% url 'customer_home' user.username %}" class="nav-link">Restaurants</a>
+                        <a href="{% url 'show_cart' user.username %}" class="nav-link">My Cart</a>
+                    {% endif %}
+                    <a href="{% url 'logout' %}" class="nav-link logout-link">Sign Out ({{ user.username }})</a>
+                {% else %}
+                    <a href="{% url 'open_signup' %}" class="nav-link signup-link">Sign Up</a>
+                    <a href="{% url 'open_signin' %}" class="nav-link signin-link">Sign In</a>
+                {% endif %}
+            </nav>
+        </div>
+    </header>
+
+    <main class="page-shell">
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer class="site-footer">
+        <div class="footer-inner">
+            <p>Delicious dining, delivered fast.</p>
+            <p>© FoodNest • Premium food experience</p>
+        </div>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,20 @@
+{% extends 'delivery/base.html' %}
+
+{% block title %}Welcome | FoodNest{% endblock %}
+
+{% block content %}
+<section class="hero">
+    <div>
+        <span class="badge">Every Meal Brings Happiness</span>
+        <p class="section-heading">Welcome to <span class="brand-highlight">FoodNest!</span></p>
+        <h1 class="page-title">Delicious meals delivered fast.</h1>
+        <p class="help-text">"Every meal tells a story. Let FoodNest deliver yours." ❤️</p>
+    
+    </div>
+
+    <div class="hero-actions">
+        <a class="button primary" href="{% url 'open_signup' %}">Create Account</a>
+        <a class="button secondary" href="{% url 'open_signin' %}">Sign In</a>
+    </div>
+</section>
+{% endblock %}

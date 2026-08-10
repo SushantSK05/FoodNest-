@@ -1,0 +1,36 @@
+{% extends 'delivery/base.html' %}
+
+{% block title %}Restaurants | FoodNest{% endblock %}
+
+{% block content %}
+<section class="hero">
+    <div>
+        <h1 class="page-title">Welcome back, {{ username }}!</h1>
+        <p class="help-text">Choose a restaurant and start your next meal in just a few clicks.</p>
+    </div>
+</section>
+
+<section class="panel">
+    <h2 class="section-heading">Available Restaurants</h2>
+    <div class="card-grid">
+        {% for r in restaurantList %}
+        <article class="card">
+            <img src="{{ r.picture }}" alt="{{ r.name }}">
+            <div class="card-body">
+                <div>
+                    <h3 class="card-title">{{ r.name }}</h3>
+                    <div class="card-meta">
+                        <span class="badge">{{ r.cuisine }}</span>
+                        <span>Rating {{ r.rating }}</span>
+                    </div>
+                </div>
+                <p class="help-text">{{ r.description|default:'Tasty menu ready to order.' }}</p>
+                <div class="card-actions">
+                    <a class="button primary" href="{% url 'view_menu' r.id username %}">View Menu</a>
+                </div>
+            </div>
+        </article>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}

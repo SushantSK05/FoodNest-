@@ -1,0 +1,30 @@
+{% extends 'delivery/base.html' %}
+
+{% block title %}Admin Dashboard | FoodNest{% endblock %}
+
+{% block content %}
+<section class="hero">
+    <div>
+        <h1 class="page-title">Admin Dashboard</h1>
+        <p class="help-text">Overview of your FoodNest delivery network and management controls.</p>
+    </div>
+    <div class="hero-actions">
+        <a class="button primary" href="{% url 'open_add_restaurants' %}">+ Add Restaurant</a>
+        <a class="button secondary" href="{% url 'open_show_restaurants' %}">Manage Restaurants</a>
+    </div>
+</section>
+
+<section class="panel">
+    <h2 class="section-heading">Platform Overview</h2>
+    <div class="card-grid" style="grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px;">
+        <article class="card" style="padding: 24px;">
+            <span class="badge" style="background: rgba(255,90,95,0.15); color: #ff5a5f; font-weight: 700; font-size: 14px;">Restaurants</span>
+            <h2 style="font-size: 36px; margin: 12px 0 4px 0;">{{ restaurant_count }}</h2>
+            <p class="help-text" style="margin: 0;">Active food partners</p>
+            <div style="margin-top: 16px;">
+                <a href="{% url 'open_show_restaurants' %}" class="button secondary" style="width: 100%; text-align: center;">View List</a>
+            </div>
+        </article>
+    </div>
+</section>
+{% endblock %}

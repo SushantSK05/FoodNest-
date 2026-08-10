@@ -1,0 +1,13 @@
+{% extends 'delivery/base.html' %}
+
+{% block title %}Login Failed | FoodNest{% endblock %}
+
+{% block content %}
+<section class="status-panel error-panel">
+    <div class="summary-panel">
+        <h2 class="section-heading">Login Failed</h2>
+    <p class="help-text">Please check your username and password, then try again.</p>
+    <a class="button primary" href="{% url 'open_signin' %}">Try Again</a>
+    </div>
+</section>
+{% endblock %}

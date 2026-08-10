@@ -1,0 +1,71 @@
+{% extends 'delivery/base.html' %}
+
+{% block title %}Update Menu | FoodNest{% endblock %}
+
+{% block content %}
+<section class="hero">
+    <div>
+        <h1 class="page-title">Update Menu for {{ restaurant.name }}</h1>
+        <p class="help-text">Manage items and add new dishes for this restaurant.</p>
+    </div>
+    <div class="hero-actions">
+        <a class="button secondary" href="{% url 'open_show_restaurants' %}">← Back to Restaurants</a>
+    </div>
+</section>
+
+<section class="panel">
+    <h2 class="section-heading">Current Menu Items</h2>
+    <div class="card-grid">
+        {% for item in itemList %}
+        <article class="card">
+            <img src="{{ item.picture }}" alt="{{ item.name }}">
+            <div class="card-body">
+                <div>
+                    <h3 class="card-title">{{ item.name }}</h3>
+                    <div class="card-meta">
+                        <span class="price-tag">₹{{ item.price }}</span>
+                        <span class="badge">{% if item.vegeterian %}Veg{% else %}Non-Veg{% endif %}</span>
+                    </div>
+                </div>
+                <p class="help-text">{{ item.description }}</p>
+                <div class="card-actions">
+                    <a class="button secondary" href="{% url 'delete_item' item.id %}" onclick="return confirm('Are you sure you want to delete this dish?');">Delete Dish</a>
+                </div>
+            </div>
+        </article>
+        {% empty %}
+        <p class="help-text" style="grid-column: 1 / -1; text-align: center; padding: 20px;">No menu dishes added yet. Use the form below to add dishes.</p>
+        {% endfor %}
+    </div>
+</section>
+
+<section class="form-panel">
+    <h2 class="section-heading">Add Menu Item</h2>
+
+    {% if error %}
+    <div class="status-panel error-panel" style="margin-bottom: 20px;">
+        <p>{{ error }}</p>
+    </div>
+    {% endif %}
+
+    <form action="{% url 'update_menu' restaurant.id %}" method="post" class="form-grid">
+        {% csrf_token %}
+        <label for="name">Item Name</label>
+        <input id="name" type="text" name="name" required>
+
+        <label for="description">Description</label>
+        <textarea id="description" name="description" required></textarea>
+
+        <label for="price">Price</label>
+        <input id="price" type="number" name="price" step="0.01" min="0" required>
+
+        <label for="vegeterian">Vegetarian</label>
+        <input id="vegeterian" type="checkbox" name="vegeterian">
+
+        <label for="picture">Image URL</label>
+        <input id="picture" type="text" name="picture" placeholder="https://example.com/item.jpg">
+
+        <button class="primary" type="submit">Add Item</button>
+    </form>
+</section>
+{% endblock %}

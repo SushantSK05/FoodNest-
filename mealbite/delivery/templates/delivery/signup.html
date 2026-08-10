@@ -1,0 +1,48 @@
+{% extends 'delivery/base.html' %}
+
+{% block title %}Sign Up | FoodNest{% endblock %}
+
+{% block content %}
+<div class="nav-back-wrap" style="margin-bottom: 20px;">
+    <a href="/" class="button secondary" style="display: inline-flex; align-items: center; gap: 8px;">
+        ← Back to Home
+    </a>
+</div>
+
+<section class="form-panel">
+    <h2 class="section-heading">Create your account</h2>
+    <p class="help-text">Sign up to order delicious food or manage your restaurant network.</p>
+
+    {% if error %}
+    <div class="status-panel error-panel" style="margin-bottom: 20px;">
+        <p>{{ error }}</p>
+    </div>
+    {% endif %}
+
+    <form action="{% url 'signup' %}" method="post" class="form-grid">
+        {% csrf_token %}
+        <label for="username">Username</label>
+        <input id="username" type="text" name="username" required placeholder="Choose a username">
+
+        <label for="password">Password</label>
+        <input id="password" type="password" name="password" required placeholder="Choose a password">
+
+        <label for="role">Account Type</label>
+        <select id="role" name="role" style="padding: 12px; border-radius: 8px; border: 1px solid var(--border); background: var(--surface); color: var(--text); font-size: 15px;">
+            <option value="customer">Customer (Order Food)</option>
+            <option value="admin">Administrator / Manager</option>
+        </select>
+
+        <label for="email">Email</label>
+        <input id="email" type="email" name="email" required placeholder="your.email@example.com">
+
+        <label for="mobile">Mobile</label>
+        <input id="mobile" type="text" name="mobile" required placeholder="Your phone number">
+
+        <label for="address">Address</label>
+        <textarea id="address" name="address" required placeholder="Delivery or business address"></textarea>
+
+        <button class="primary" type="submit">Sign Up</button>
+    </form>
+</section>
+{% endblock %}

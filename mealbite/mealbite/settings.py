@@ -96,13 +96,25 @@ TEMPLATES = [
 WSGI_APPLICATION = "mealbite.wsgi.application"
 
 
-# Database
-# https://docs.djangoproject.com/en/6.0/ref/settings/#databases
+import shutil
+
+ORIGINAL_DB = BASE_DIR / "db.sqlite3"
+
+if os.environ.get("VERCEL") or os.environ.get("VERCEL_ENV") or "/var/task" in str(BASE_DIR):
+    TMP_DB = Path("/tmp/db.sqlite3")
+    if ORIGINAL_DB.exists() and not TMP_DB.exists():
+        try:
+            shutil.copy2(ORIGINAL_DB, TMP_DB)
+        except Exception:
+            pass
+    DB_PATH = TMP_DB
+else:
+    DB_PATH = ORIGINAL_DB
 
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+        "NAME": DB_PATH,
     }
 }
 

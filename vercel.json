@@ -8,11 +8,7 @@
   ],
   "routes": [
     {
-      "src": "/static/(.*)",
-      "dest": "/mealbite/delivery/static/$1"
-    },
-    {
-      "src": "(.*)",
+      "src": "/(.*)",
       "dest": "mealbite/mealbite/wsgi.py"
     }
   ]
